@@ -2,6 +2,9 @@ import PyPDF2
 import argparse
 import os
 import pathlib
+import sys
+sys.stdin.reconfigure(encoding='utf-8')
+sys.stdout.reconfigure(encoding='utf-8')
 
 
 def args():
