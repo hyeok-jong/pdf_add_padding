@@ -29,7 +29,7 @@ def padding(pdf_file, margin = 300):
             box.lowerRight = (box[3] + int(1.5*margin), -margin)  # 이거 정확하게 이해 못함 그냥 이렇게 하면 됨. 모르겠음
 
         output.addPage(page)
-    with open(f"{pdf_file[:-4]}_resized.pdf", "wb+") as f:
+    with open(f"resized_{pdf_file[:-4]}.pdf", "wb+") as f:
         output.write(f)
     
 if __name__=="__main__":
