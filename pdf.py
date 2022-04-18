@@ -10,11 +10,11 @@ sys.stdout.reconfigure(encoding='utf-8')
 def args():
     parser = argparse.ArgumentParser()
     #parser.add_argument("--pdf_dir", type = str, help = "PDF dir not file name")
-    parser.add_argument("--margin", type = int, default = "300", help = "Do not change if u want change probabily u have to change line 24 also")
+    parser.add_argument("--margin", type = int, default = "200", help = "Do not change if u want change probabily u have to change line 24 also")
     return parser.parse_args()
 
 
-def padding(pdf_file, margin = 300):
+def padding(pdf_file, margin = 200):
     
     output = PyPDF2.PdfFileWriter() 
     pdf = PyPDF2.PdfFileReader(pdf_file)
@@ -26,13 +26,14 @@ def padding(pdf_file, margin = 300):
             # 이렇게 하면 왼쪽 아래 공백생김 -> 불편함 이럼 안하니만 못함
             #box.UpperRight = (box.getUpperRight_x() + margin, box.getUpperRight_y() + margin)   # width+margin, height+margin
             #box.lowerLeft = (box.getLowerLeft_x() - margin, box.getLowerLeft_y() - margin)      # 0(width)-margin, 0(height)-margin
-            box.lowerRight = (box[3] + int(1.5*margin), -margin)  # 이거 정확하게 이해 못함 그냥 이렇게 하면 됨. 모르겠음
+            box.lowerRight = (box[3] + int(2*margin), -margin)  # 이거 정확하게 이해 못함 그냥 이렇게 하면 됨. 모르겠음
 
         output.addPage(page)
     with open(f"resized_{pdf_file[:-4]}.pdf", "wb+") as f:
         output.write(f)
     
 if __name__=="__main__":
+    args = args()
     #pdf_dir = args()
     #pdf_dir = pathlib.Path(pdf_dir)
     pdf_dir = os.getcwd()
@@ -54,8 +55,8 @@ if __name__=="__main__":
         
     for pdf in pdfs:
         if isinstance(pdf, str):
-            padding(pdf_file = pdf, margin = 300)
+            padding(pdf_file = pdf, margin = args.margin)
         else:
-            padding(pdf_file = pdf_list[pdf], margin = 300)
+            padding(pdf_file = pdf_list[pdf], margin = args.margin)
     print("끝났다.")
     
