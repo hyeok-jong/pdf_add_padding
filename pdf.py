@@ -3,6 +3,7 @@ import argparse
 import os
 import pathlib
 import sys
+from tqdm import tqdm
 sys.stdin.reconfigure(encoding='utf-8')
 sys.stdout.reconfigure(encoding='utf-8')
 
@@ -53,7 +54,7 @@ if __name__=="__main__":
     else:
         pdfs = list(map(int,pdfs))
         
-    for pdf in pdfs:
+    for pdf in tqdm(pdfs):
         if isinstance(pdf, str):
             padding(pdf_file = pdf, margin = args.margin)
         else:
