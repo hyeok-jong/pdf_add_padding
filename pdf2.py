@@ -24,7 +24,7 @@ def padding(pdf_file, margin = 200):
         page = pdf.getPage(i)
         page.scaleBy(1)  # 이거 건들면 전체 size가 바뀜
         page_blank = PyPDF2.pdf.PageObject.createBlankPage( width = decimal.Decimal(int(page.mediaBox.getWidth())*1.3),  height = decimal.Decimal(int(page.mediaBox.getHeight())*1.3) )
-        print(page.mediaBox.getWidth(), page.mediaBox.getHeight())
+
         page_blank.mergeScaledTranslatedPage( page, tx=0, ty= int(page.mediaBox.getHeight())*0.3, scale=1 )    
         output.addPage(page_blank)
     with open(f"resized_{pdf_file[:-4]}.pdf", "wb+") as f:
@@ -40,7 +40,7 @@ if __name__=="__main__":
     print("PDF만 읽었다. 전체 할꺼면 all. 몇개만 할꺼면 해당 숫자 입력하라. 여러개 입력하면 한번에 해줄꺼다.")
     for n,i in enumerate(pdf_list):
         if i[-4:]==".pdf":
-
+            print(n,i)
     pdfs = list(map(str,input().split()))
     
     if pdfs[0] == "all":
