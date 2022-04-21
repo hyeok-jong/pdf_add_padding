@@ -12,20 +12,20 @@ sys.stdout.reconfigure(encoding='utf-8')
 def args():
     parser = argparse.ArgumentParser()
     #parser.add_argument("--pdf_dir", type = str, help = "PDF dir not file name")
-    parser.add_argument("--margin", type = int, default = "200", help = "Do not change if u want change probabily u have to change line 24 also")
+    parser.add_argument("--ratio", type = float, default = 1.3, help = "ratio to enlarged")
     return parser.parse_args()
 
 
-def padding(pdf_file, margin = 200):
+def padding(pdf_file, ratio = 1.3):
     
     output = PyPDF2.PdfFileWriter() 
     pdf = PyPDF2.PdfFileReader(pdf_file)
     for i in range(pdf.numPages):
         page = pdf.getPage(i)
         page.scaleBy(1)  # 이거 건들면 전체 size가 바뀜
-        page_blank = PyPDF2.pdf.PageObject.createBlankPage( width = decimal.Decimal(int(page.mediaBox.getWidth())*1.3),  height = decimal.Decimal(int(page.mediaBox.getHeight())*1.3) )
+        page_blank = PyPDF2.pdf.PageObject.createBlankPage( width = decimal.Decimal(int(page.mediaBox.getWidth())*ratio),  height = decimal.Decimal(int(page.mediaBox.getHeight())*ratio) )
 
-        page_blank.mergeScaledTranslatedPage( page, tx=0, ty= int(page.mediaBox.getHeight())*0.3, scale=1 )    
+        page_blank.mergeScaledTranslatedPage( page, tx=0, ty= int(page.mediaBox.getHeight())*(ratio-1), scale=1 )    
         output.addPage(page_blank)
     with open(f"resized_{pdf_file[:-4]}.pdf", "wb+") as f:
         output.write(f)
@@ -53,8 +53,8 @@ if __name__=="__main__":
         
     for pdf in tqdm(pdfs):
         if isinstance(pdf, str):
-            padding(pdf_file = pdf, margin = args.margin)
+            padding(pdf_file = pdf, ratio = args.ratio)
         else:
-            padding(pdf_file = pdf_list[pdf], margin = args.margin)
+            padding(pdf_file = pdf_list[pdf], ratio = args.ratio)
     print("끝났다.")
     
