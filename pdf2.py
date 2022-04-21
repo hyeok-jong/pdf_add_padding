@@ -21,9 +21,13 @@ def padding(pdf_file, ratio = 1.3):
     output = PyPDF2.PdfFileWriter() 
     pdf = PyPDF2.PdfFileReader(pdf_file)
     for i in range(pdf.numPages):
+
         page = pdf.getPage(i)
         page.scaleBy(1)  # 이거 건들면 전체 size가 바뀜
         page_blank = PyPDF2.pdf.PageObject.createBlankPage( width = decimal.Decimal(int(page.mediaBox.getWidth())*ratio),  height = decimal.Decimal(int(page.mediaBox.getHeight())*ratio) )
+
+        if i == 0: # add same sized black page at first
+            output.addPage(PyPDF2.pdf.PageObject.createBlankPage( width = decimal.Decimal(int(page.mediaBox.getWidth())*ratio),  height = decimal.Decimal(int(page.mediaBox.getHeight())*ratio) ))
 
         page_blank.mergeScaledTranslatedPage( page, tx=0, ty= int(page.mediaBox.getHeight())*(ratio-1), scale=1 )    
         output.addPage(page_blank)
