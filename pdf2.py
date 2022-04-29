@@ -31,7 +31,7 @@ def padding(pdf_file, ratio = 1.3):
 
         page_blank.mergeScaledTranslatedPage( page, tx=0, ty= int(page.mediaBox.getHeight())*(ratio-1), scale=1 )    
         output.addPage(page_blank)
-    with open(f"resized_{pdf_file[:-4]}.pdf", "wb+") as f:
+    with open(f"resized_{pdf_file[:-4]}_{ratio}.pdf", "wb+") as f:
         output.write(f)
     
 if __name__=="__main__":
