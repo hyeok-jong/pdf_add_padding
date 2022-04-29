@@ -20,7 +20,7 @@ def padding(pdf_file, ratio = 1.3):
     
     output = PyPDF2.PdfFileWriter() 
     pdf = PyPDF2.PdfFileReader(pdf_file)
-    for i in range(pdf.numPages):
+    for i in tqdm(range(pdf.numPages)):
 
         page = pdf.getPage(i)
         page.scaleBy(1)  # 이거 건들면 전체 size가 바뀜
