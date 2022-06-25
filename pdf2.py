@@ -12,6 +12,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 def args():
     parser = argparse.ArgumentParser()
     #parser.add_argument("--pdf_dir", type = str, help = "PDF dir not file name")
+    parser.add_argument("--paper", type = str, default = True, help = "paper form")
     parser.add_argument("--ratio_width", type = float, default = 1.3, help = "ratio to enlarged width")
     parser.add_argument("--ratio_height", type = float, default = 1.3, help = "ratio to enlarged height")
     return parser.parse_args()
@@ -40,7 +41,7 @@ def padding(pdf_file, ratio_width = 1.3, ratio_height = 1.3):
 
         page_blank.mergeScaledTranslatedPage( 
                                              page, 
-                                             tx=0, 
+                                             tx=int(page.mediaBox.getWidth())*(ratio_width-1)//5,   # 0이면 왼쪽 정렬이고 커질수록 왼쪽의 margin이다. 
                                              ty= int(page.mediaBox.getHeight())*(ratio_height-1), 
                                              scale=1 
                                              )    
@@ -51,6 +52,10 @@ def padding(pdf_file, ratio_width = 1.3, ratio_height = 1.3):
         
     with open(f"resized_{pdf_file[:-4]}_w{ratio_width}_h{ratio_height}.pdf", "wb+") as f:
         output.write(f)
+    
+    
+    
+    
     
 if __name__=="__main__":
     args = args()
@@ -73,7 +78,11 @@ if __name__=="__main__":
     else:
         pdfs = list(map(int,pdfs))
         
-        
+    if args.paper:
+            args.ratio_width = 1.7
+            args.ratio_height = 1.05
+            
+    
     
     for pdf in tqdm(pdfs):
         if isinstance(pdf, str):
