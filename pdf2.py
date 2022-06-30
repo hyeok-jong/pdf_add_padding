@@ -49,6 +49,8 @@ def padding(pdf_file, ratio_width = 1.3, ratio_height = 1.3):
         
         output.addPage(page_blank)
         
+        # Eliminate some annoying rectangular box
+        output.removeLinks()
         
     with open(f"resized_{pdf_file[:-4]}_w{ratio_width}_h{ratio_height}.pdf", "wb+") as f:
         output.write(f)
