@@ -48,10 +48,11 @@ def padding(pdf_file, ratio_width, ratio_height):
                                              scale=1 
                                              )    
         '''
-        page.add_transformation(PyPDF2.Transformation().translate(
+        page_blank.merge_page(page)
+        page_blank.add_transformation(PyPDF2.Transformation().translate(
             tx = int(page.mediabox.width)*(ratio_width-1)//4, 
             ty = int(page.mediabox.height)*(ratio_height-1)))
-        page_blank.merge_page(page)
+        #page_blank.merge_page(page)
 
         output.add_page(page_blank)
         
