@@ -31,7 +31,7 @@ def padding(pdf_file, ratio_width, ratio_height):
                                                            width = decimal.Decimal(int(page.mediabox.width)*ratio_width),  
                                                            height = decimal.Decimal(int(page.mediabox.height)*ratio_height) 
                                                            )
-
+        '''
         if i == 0: # add same sized black page at first
             output.add_page( 
                            PyPDF2._page.PageObject.create_blank_page( 
@@ -39,6 +39,7 @@ def padding(pdf_file, ratio_width, ratio_height):
                                                                  height = decimal.Decimal(int(page.mediabox.height)*ratio_height) 
                                                                  ) 
                            )
+        '''
             
         '''
         page_blank.mergeScaledTranslatedPage( 
