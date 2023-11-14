@@ -60,7 +60,7 @@ def padding(pdf_file, ratio_width, ratio_height):
         # Eliminate some annoying rectangular box
         output.remove_links()
         
-    with open(f"_{pdf_file[:-4]}_w{ratio_width}_h{ratio_height}.pdf", "wb+") as f:
+    with open(f"_{pdf_file[:-4].replace(' ', '')}_w{ratio_width}_h{ratio_height}.pdf", "wb+") as f:
         output.write(f)
     
     
