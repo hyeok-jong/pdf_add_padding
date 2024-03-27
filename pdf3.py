@@ -14,9 +14,10 @@ sys.setrecursionlimit(5000)
 def args():
     parser = argparse.ArgumentParser()
     #parser.add_argument("--pdf_dir", type = str, help = "PDF dir not file name")
-    parser.add_argument("--paper", type = str, default = True, help = "paper form")
-    parser.add_argument("--ratio_width", type = float, default = 1.7, help = "ratio to enlarged width")
-    parser.add_argument("--ratio_height", type = float, default = 1.05, help = "ratio to enlarged height")
+    # parser.add_argument("--paper", type = str, default = True, help = "paper form")
+    parser.add_argument('-wr', "--ratio_width", type = float, default = 1.8, help = "ratio to enlarged width")
+    parser.add_argument('-hr', "--ratio_height", type = float, default = 1.2, help = "ratio to enlarged height")
+    parser.add_argument('-d', '--directory', type = str, default = '../../Downloads/', help = 'dir to read pdfs.')
     return parser.parse_args()
 
 
@@ -59,8 +60,12 @@ def padding(pdf_file, ratio_width, ratio_height):
         
         # Eliminate some annoying rectangular box
         output.remove_links()
-        
-    with open(f"Resized_{pdf_file[:-4].replace(' ', '_')}_w{ratio_width}_h{ratio_height}.pdf", "wb+") as f:
+    dir = pdf_file.split('/')[:-1]
+    pdf = pdf_file.split('/')[-1]
+    new_dir = '/'.join(dir) + '/' + f"Resized_{pdf[:-4].replace(' ', '_')}_w{ratio_width}_h{ratio_height}.pdf"
+    
+    
+    with open(new_dir, "wb+") as f:
         output.write(f)
     
     
@@ -71,29 +76,26 @@ if __name__=="__main__":
     args = args()
     #pdf_dir = args()
     #pdf_dir = pathlib.Path(pdf_dir)
-    pdf_dir = os.getcwd()
-    pdf_list = os.listdir(pdf_dir)
+    pdf_dir = os.getcwd() + f'/{args.directory}'
+    print(f'PDF read directory : {pdf_dir}')
+    pdf_list = [i for i in os.listdir(pdf_dir) if i.endswith('.pdf')]
     
     print("PDF만 읽었다. 전체 할꺼면 all. 몇개만 할꺼면 해당 숫자 입력하라. 여러개 입력하면 한번에 해줄꺼다.")
     for n,i in enumerate(pdf_list):
-        if i[-4:]==".pdf":
-            print(n,i)
-    pdfs = list(map(str,input().split()))
+        print(n, ':', i)
+    TODO = list(map(str,input().split()))
     
-    if pdfs[0] == "all":
+    if TODO[0] == "all":
         pdfs = []
         for i in pdf_list:
             if i[-4:] == ".pdf":
                 pdfs.append(i)
     else:
-        pdfs = list(map(int,pdfs))
+        pdfs = [pdf_list[int(i)] for i in TODO]
         
-            
     
     
     for pdf in tqdm(pdfs):
-        if isinstance(pdf, str):
-            padding(pdf_file = pdf, ratio_width = args.ratio_width, ratio_height = args.ratio_height)
-        else:
-            padding(pdf_file = pdf_list[pdf], ratio_width = args.ratio_width, ratio_height = args.ratio_height)
+        print(f'processing {pdf} ...')
+        padding(pdf_file = f'{pdf_dir}/{pdf}', ratio_width = args.ratio_width, ratio_height = args.ratio_height)
     print("끝났다.")
