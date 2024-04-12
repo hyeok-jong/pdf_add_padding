@@ -17,7 +17,7 @@ def args():
     # parser.add_argument("--paper", type = str, default = True, help = "paper form")
     parser.add_argument('-wr', "--ratio_width", type = float, default = 1.8, help = "ratio to enlarged width")
     parser.add_argument('-hr', "--ratio_height", type = float, default = 1.2, help = "ratio to enlarged height")
-    parser.add_argument('-d', '--directory', type = str, default = '../../Downloads/', help = 'dir to read pdfs.')
+    parser.add_argument('-d', '--directory', type = str, default = f'{os.getcwd()}/../../Downloads/', help = 'dir to read pdfs.')
     return parser.parse_args()
 
 
@@ -76,7 +76,7 @@ if __name__=="__main__":
     args = args()
     #pdf_dir = args()
     #pdf_dir = pathlib.Path(pdf_dir)
-    pdf_dir = os.getcwd() + f'/{args.directory}'
+    pdf_dir = f'/{args.directory}'
     print(f'PDF read directory : {pdf_dir}')
     pdf_list = [i for i in os.listdir(pdf_dir) if i.endswith('.pdf')]
     
